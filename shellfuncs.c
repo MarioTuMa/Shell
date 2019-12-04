@@ -1,14 +1,36 @@
-char ** parse_args( char * line ){
+#include <sys/stat.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <errno.h>
 
-  int counter = 0;
-  int currentSize = 0;
-  char** parsed_args = malloc(0);
-  while(line){
-      parsed_args=realloc(parsed_args,8*counter+8);
-      parsed_args[counter]=strsep( &line, " " );
-      printf("%s\n",parsed_args[counter]);
-      counter++;
+char ** parse_args(char *line){
+  char **args = malloc(4096 * sizeof(char *));
+  char *curr = line;
+  int i = 0;
+  while (*curr != '\0'){
+
+    args[i++] = strsep(&curr, " \n");
+    printf("%s\n",args[i-1]);
   }
-  parsed_args[counter] = NULL;
-  return parsed_args;
+  args[i] = NULL;
+  return args;
+}
+
+void launch_process(char ** args){
+  pid_t pID, wID;
+  int status;
+
+  pID = fork();
+  if (pID == 0){
+    execvp(args[0],args);
+  }
+  else{
+    wID = waitpid(pID,&status, WUNTRACED);
+    while(!WIFEXITED(status) && !WIFSIGNALED(status));
+  }
 }

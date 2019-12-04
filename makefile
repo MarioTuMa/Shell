@@ -1,8 +1,17 @@
-all: main.o
-	gcc -o program main.o
+ifeq ($(DEBUG), true)
+	CC = gcc -g
+else
+	CC = gcc
+endif
 
-main.o: main.c
-	gcc -c main.c
+all: main.o shellfuncs.o shellfuncs.o
+	$(CC) -o program main.o shellfuncs.o
+
+main.o: main.c shellfuncs.h
+	$(CC) -c main.c
+
+shellfuncs.o: shellfuncs.c shellfuncs.h
+	$(CC) -c shellfuncs.c
 
 run:
 	./program
