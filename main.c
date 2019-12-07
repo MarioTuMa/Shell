@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-#include <shellfuncs.h>
+#include "shellfuncs.h"
 
 int main(int argc, char **argv){
   while(1){
@@ -17,10 +17,11 @@ int main(int argc, char **argv){
     char directString[4096];
     int limit=4096;
     fgets(directString, limit, stdin);
-    printf("%s\n",directString);
+    directString[strlen(directString)-1]='\0';
+    //printf("%s\n",directString);
     char** callParams=parse_args(directString);
-    printf("made it here \n");
-    printf("%s\n", (callParams[0]));
+    //printf("made it here \n");
+    //printf("%s\n", (callParams[0]));
 
     launch_process(callParams);
   }

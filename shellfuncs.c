@@ -15,8 +15,8 @@ char ** parse_args(char *line){
   char** parsed_args = malloc(0);
   while(line){
       parsed_args=realloc(parsed_args,8*counter+8);
-      parsed_args[counter]=strsep( &line, " " );
-      printf("%s\n",parsed_args[counter]);
+      parsed_args[counter]=strsep( &line, " ");
+      //printf("%s\n",parsed_args[counter]);
       counter++;
   }
   parsed_args[counter] = NULL;
@@ -24,24 +24,35 @@ char ** parse_args(char *line){
 }
 
 void launch_process(char ** args){
-  pid_t pID, wID;
+  pid_t pid;
+  time_t t;
   int status;
 
-  pID = fork();
-  printf("%d\n",pID);
-  if (pID == 0){
-    printf("child\n");
-
-
+  if ((pid = fork()) < 0)
+    perror("fork() error");
+  else if (pid == 0) {
     execvp(args[0],args);
     exit(1);
   }
-  //printf("parent\n");
+  else do {
+    if ((pid = waitpid(pid, &status, WNOHANG)) == -1)
+      perror("wait() error");
+    else if (pid == 0) {
+      //time(&t);
+      //printf("child is still running at %s", ctime(&t));
+      //sleep(1);
+    }
+    else {
+      if (WIFEXITED(status)){
+        if(WEXITSTATUS(status)){
+          printf("child exited with status of %d\n", WEXITSTATUS(status));
+        }
+      }
 
-  while (!WIFEXITED(status) && !WIFSIGNALED(status)) {
-    //printf("\n");
-    wID = waitpid(pID,&status,WUNTRACED);
-    printf("WIFEXITED %d, WIFSIGNALED %d\n",WIFEXITED(status),WIFSIGNALED(status));
-  }
-  printf("made it past \n");
+      else{
+          printf("child did not exit successfully\n");
+      }
+    }
+  } while (pid == 0);
+  //printf("made it past \n");
 }
