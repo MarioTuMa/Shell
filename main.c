@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-
+#include <shellfuncs.h>
 
 int main(int argc, char **argv){
   while(1){
@@ -17,23 +17,12 @@ int main(int argc, char **argv){
     char directString[4096];
     int limit=4096;
     fgets(directString, limit, stdin);
-    char **args = parse_args(directString);
-    launch_process(args);
-    // pid_t child_pid, wpid;
-    // int status = 0;
+    printf("%s\n",directString);
+    char** callParams=parse_args(directString);
+    printf("made it here \n");
+    printf("%s\n", (callParams[0]));
 
-//Father code (before child processes start)
-
-    // for (int id=0; id<1; id++) {
-    //   if ((child_pid = fork()) == 0) {
-    //     execvp(args[0],args);
-    //     free(args);
-    //     directString[strlen(directString)-1]=0;
-    //     exit(0);
-    //   }
-    // }
-    //
-    // while ((wpid = wait(&status)) > 0);
+    launch_process(callParams);
   }
   return 0;
 }
