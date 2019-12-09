@@ -13,18 +13,22 @@
 int main(int argc, char **argv){
   while(1){
     char cwd[4096];
-    printf("%s>", getcwd(cwd, 4096));
+    getcwd(cwd, 4096);
+    printf("%s>", cwd);
     char directString[4096];
     int limit=4096;
     fgets(directString, limit, stdin);
     directString[strlen(directString)-1]='\0';
     char** callParams=parse_args(directString);
-    char cd[2] = "cd";
-    //printf("%s\n", callParams[0]);
-    //printf("%d\n", strcmp(callParams[0],cd));
+    char cd[3] = "cd\n";
+    cd[2]-=10;
+
     if(!strcmp(callParams[0],cd)){
-      //printf("Hi, we don't know how to cd yet\n");
-      chdir(callParams[1]);
+      char *dir = strcat(strcat(cwd,"/"),callParams[1]);
+
+      if(chdir(dir)){
+        printf("%s\n",strerror(errno));
+      }
     }
     else{
       launch_process(callParams);
