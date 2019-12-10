@@ -56,3 +56,22 @@ void launch_process(char ** args){
   } while (pid == 0);
   //printf("made it past \n");
 }
+
+char *** sep_colon(char * line){
+  int counter = 0;
+  int currentSize = 0;
+  char** parsed_args = malloc(0);
+  while(line){
+      parsed_args=realloc(parsed_args,8*counter+8);
+      parsed_args[counter]=strsep( &line, ";");
+      //printf("%s\n",parsed_args[counter]);
+      counter++;
+  }
+  parsed_args[counter] = NULL;
+  char*** fleabag = malloc(0);
+  int i;
+  for (i = 0; i < sizeof(parsed_args) / 8; i++){
+    fleabag[i] = parse_args(parsed_args[i]);
+  }
+  return fleabag;
+}
