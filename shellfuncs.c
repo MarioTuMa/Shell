@@ -45,7 +45,7 @@ void launch_process(char ** args){
     else {
       if (WIFEXITED(status)){
         if(WEXITSTATUS(status)){
-          printf("child exited with status of %d\n", WEXITSTATUS(status));
+          printf("%s\n", strerror(errno));
         }
       }
 
@@ -59,23 +59,39 @@ void launch_process(char ** args){
 
 char *** sep_colon(char * line){
   int counter = 0;
+  int i;
   int currentSize = 0;
-  char** parsed_args = malloc(0);
+  char** parsed_coms = malloc(0);
   while(line){
-      parsed_args=realloc(parsed_args,8*counter+8);
-      parsed_args[counter]=strsep( &line, ";");
+      parsed_coms=realloc(parsed_coms,8*counter+8);
+      parsed_coms[counter]=strsep( &line, ";");
       //printf("%s\n",parsed_args[counter]);
       counter++;
   }
+  parsed_coms[counter] = NULL;
 
-  parsed_args[counter] = NULL;
-  char*** fleabag = malloc(0);
-  counter = 0;
-  for (i = 0; i < sizeof(parsed_args) / 8; i++){
+  char*** fleabag = malloc(8);
+  int bounter = 0;
+
+  for (i = 0; i < counter; i++){
     fleabag=realloc(fleabag,8*counter+8);
-    fleabag[i] = parse_args(parsed_args[i]);
-    counter++;
+    fleabag[i] = parse_args(parsed_coms[i]);
+    //printf("%s\n",parsed_coms[i]);
+    bounter++;
   }
-  printf("%ld\n",sizeof(fleabag));
+  fleabag[bounter]=NULL;
+  //printf("%d\n",bounter);
   return fleabag;
+}
+
+int countSemis(char * a){
+  int semis=0;
+  int i;
+  for(i = 0; a[i] != '\0'; i++){
+     if (a[i] == ';')
+     {
+          semis++;
+     }
+  }
+  return semis;
 }
