@@ -19,19 +19,22 @@ int main(int argc, char **argv){
     int limit=4096;
     fgets(directString, limit, stdin);
     directString[strlen(directString)-1]='\0';
-    char** callParams=parse_args(directString);
+    char*** callParams=sep_colon(directString);
     char cd[3] = "cd\n";
     cd[2]-=10;
+    int i;
+    printf("%ld\n",sizeof(callParams)/8);
+    for(i=0;i<sizeof(callParams)/8;i++){
+      if(!strcmp(callParams[i][0],cd)){
+        char *dir = strcat(strcat(cwd,"/"),callParams[i][1]);
 
-    if(!strcmp(callParams[0],cd)){
-      char *dir = strcat(strcat(cwd,"/"),callParams[1]);
-
-      if(chdir(dir)){
-        printf("%s\n",strerror(errno));
+        if(chdir(dir)){
+          printf("%s\n",strerror(errno));
+        }
       }
-    }
-    else{
-      launch_process(callParams);
+      else{
+        launch_process(callParams[i]);
+      }
     }
 
   }

@@ -67,11 +67,15 @@ char *** sep_colon(char * line){
       //printf("%s\n",parsed_args[counter]);
       counter++;
   }
+
   parsed_args[counter] = NULL;
   char*** fleabag = malloc(0);
-  int i;
+  counter = 0;
   for (i = 0; i < sizeof(parsed_args) / 8; i++){
+    fleabag=realloc(fleabag,8*counter+8);
     fleabag[i] = parse_args(parsed_args[i]);
+    counter++;
   }
+  printf("%ld\n",sizeof(fleabag));
   return fleabag;
 }
