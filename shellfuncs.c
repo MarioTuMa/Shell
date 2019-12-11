@@ -81,6 +81,7 @@ char *** sep_colon(char * line,int commandCount){
     fleabag[i] = parse_args(s,numWords);
     bounter++;
   }
+  free(parsed_coms);
   //fleabag[bounter]=NULL;
   //printf("%d\n",bounter);
   return fleabag;
