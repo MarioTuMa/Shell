@@ -70,13 +70,11 @@ char *** sep_colon(char * line){
   }
   parsed_coms[counter] = NULL;
 
-  char*** fleabag = malloc(8);
+  char*** fleabag = malloc(8*counter);
   int bounter = 0;
 
   for (i = 0; i < counter; i++){
-    fleabag=realloc(fleabag,8*counter+8);
     fleabag[i] = parse_args(parsed_coms[i]);
-    //printf("%s\n",parsed_coms[i]);
     bounter++;
   }
   fleabag[bounter]=NULL;

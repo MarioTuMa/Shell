@@ -20,13 +20,13 @@ int main(int argc, char **argv){
     fgets(directString, limit, stdin);
     directString[strlen(directString)-1]='\0';
     int commandCount = countSemis(directString)+1;
+    //printf("%d\n",commandCount);
     char*** callParams=sep_colon(directString);
 
 
     char cd[3] = "cd\n";
     cd[2]-=10;
     int i;
-    //printf("%d\n",commandCount);
     for(i=0;i<commandCount;i++){
       if(!strcmp(callParams[i][0],cd)){
         char *dir = strcat(strcat(cwd,"/"),callParams[i][1]);
@@ -39,6 +39,7 @@ int main(int argc, char **argv){
         launch_process(callParams[i]);
       }
     }
+    free(callParams);
 
   }
   return 0;
