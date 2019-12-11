@@ -8,13 +8,14 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/wait.h>
+#include "shellfuncs.h"
 
-char ** parse_args(char *line){
+char ** parse_args(char *line,int commandCount){
   int counter = 0;
   int currentSize = 0;
-  char** parsed_args = malloc(0);
+  char** parsed_args = malloc(sizeof(char *)*commandCount+sizeof(char *));
   while(line){
-      parsed_args=realloc(parsed_args,8*counter+8);
+      //parsed_args=realloc(parsed_args,sizeof(char *)*counter+sizeof(char *));
       parsed_args[counter]=strsep( &line, " ");
       //printf("%s\n",parsed_args[counter]);
       counter++;
@@ -57,36 +58,43 @@ void launch_process(char ** args){
   //printf("made it past \n");
 }
 
-char *** sep_colon(char * line){
+char *** sep_colon(char * line,int commandCount){
   int counter = 0;
   int i;
   int currentSize = 0;
-  char** parsed_coms = malloc(0);
+  char** parsed_coms = malloc(sizeof(char *)*commandCount+sizeof(char *));
   while(line){
-      parsed_coms=realloc(parsed_coms,8*counter+8);
       parsed_coms[counter]=strsep( &line, ";");
-      //printf("%s\n",parsed_args[counter]);
       counter++;
   }
   parsed_coms[counter] = NULL;
 
-  char*** fleabag = malloc(8*counter);
+  //printf("Seperated on ; \n");
+
+  char*** fleabag = malloc(sizeof(char *)*commandCount+sizeof(char *));
   int bounter = 0;
 
   for (i = 0; i < counter; i++){
-    fleabag[i] = parse_args(parsed_coms[i]);
+    char * s = parsed_coms[i];
+    int numWords = countChar(strcat(parsed_coms[i],"\0"),' ')+1;
+    //printf("%d\n",numWords);
+    fleabag[i] = parse_args(s,numWords);
     bounter++;
   }
-  fleabag[bounter]=NULL;
+  //fleabag[bounter]=NULL;
   //printf("%d\n",bounter);
   return fleabag;
 }
 
-int countSemis(char * a){
+
+int countChar(char * a,char b){
+  if(!a){
+    return 0;
+  }
   int semis=0;
   int i;
   for(i = 0; a[i] != '\0'; i++){
-     if (a[i] == ';')
+     if (a[i] == b)
      {
           semis++;
      }

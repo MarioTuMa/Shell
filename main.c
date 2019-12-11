@@ -19,9 +19,9 @@ int main(int argc, char **argv){
     int limit=4096;
     fgets(directString, limit, stdin);
     directString[strlen(directString)-1]='\0';
-    int commandCount = countSemis(directString)+1;
+    int commandCount = countChar(directString,';')+1;
     //printf("%d\n",commandCount);
-    char*** callParams=sep_colon(directString);
+    char*** callParams=sep_colon(directString,commandCount);
 
 
     char cd[3] = "cd\n";
@@ -38,6 +38,7 @@ int main(int argc, char **argv){
       else{
         launch_process(callParams[i]);
       }
+      free(callParams[i]);
     }
     free(callParams);
 
