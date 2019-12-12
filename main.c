@@ -20,12 +20,11 @@ int main(int argc, char **argv){
     fgets(directString, limit, stdin);
     directString[strlen(directString)-1]='\0';
     int commandCount = countChar(directString,';')+1;
-    //printf("%d\n",commandCount);
     char*** callParams=sep_colon(directString,commandCount);
-
-
     char cd[3] = "cd\n";
+    char exits[5] = "exit\n";
     cd[2]-=10;
+    exits[4]-=10;
     int i;
     for(i=0;i<commandCount;i++){
       if(!strcmp(callParams[i][0],cd)){
@@ -35,6 +34,9 @@ int main(int argc, char **argv){
           printf("%s\n",strerror(errno));
         }
       }
+      else if(!strcmp(callParams[i][0],exits)){
+        return 0;
+      }
       else{
         launch_process(callParams[i]);
       }
@@ -42,7 +44,6 @@ int main(int argc, char **argv){
     }
     //free(callParams[commandCount]);
     free(callParams);
-
   }
   return 0;
 }

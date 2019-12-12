@@ -46,7 +46,7 @@ void launch_process(char ** args){
     else {
       if (WIFEXITED(status)){
         if(WEXITSTATUS(status)){
-          printf("%s\n", strerror(errno));
+          printf("Invalid command \n");
         }
       }
 
