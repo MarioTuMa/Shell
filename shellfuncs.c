@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <errno.h>
 #include <sys/wait.h>
 #include "shellfuncs.h"
@@ -32,6 +33,27 @@ void launch_process(char ** args){
   if ((pid = fork()) < 0)
     perror("fork() error");
   else if (pid == 0) {
+    int i=0;
+    int redirect=0;
+    int arrowIndex = 0;
+    while(args[i]){
+      //printf("%s\n",args[i]);
+      if(!strcmp(">",args[i])){
+        //printf("We need to redirect \n");
+        redirect=1;
+        arrowIndex = i;
+        args[i]=NULL;
+      }
+      i++;
+    }
+    if(redirect){
+      int out = open(args[arrowIndex + 1], O_RDWR|O_CREAT|O_TRUNC, 0755);
+      int d = dup(STDOUT_FILENO);
+
+      dup2(out, 1);
+      close(out);
+      close(d);
+    }
     execvp(args[0],args);
     exit(1);
   }
