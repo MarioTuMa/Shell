@@ -1,1 +1,13 @@
-Shell
+Shell:
+
+char ** parse_args( char * line, int commandCount );
+  - Separates a string into an array of smaller strings on spaces that can then be used with execvp.
+  
+void launch_process(char ** args);
+  - Creates a child process by forking to run commands with execvp. It also handels redirection.
+  
+char *** sep_colon(char * line, int commandCount);
+  - Separates a string into an array of smaller strings on semicolons for the purpose of running multiple commands at once with execvp.
+  
+int countChar(char * line,char b);
+  - Counts the number of occurances of a given character in a string.
