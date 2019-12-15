@@ -9,3 +9,4 @@ shellfuncs.h
 shellfuncs.o
 test.py
 testcoms
+wholist

@@ -17,9 +17,12 @@ char ** parse_args(char *line,int commandCount){
   char** parsed_args = malloc(sizeof(char *)*commandCount+sizeof(char *));
   while(line){
       //parsed_args=realloc(parsed_args,sizeof(char *)*counter+sizeof(char *));
-      parsed_args[counter]=strsep( &line, " ");
-      //printf("%s\n",parsed_args[counter]);
-      counter++;
+      char* parsed_argstemp = strsep( &line, " ");
+      if(strlen(parsed_argstemp)){
+        parsed_args[counter]= parsed_argstemp;
+        //printf("%s\n",parsed_args[counter]);
+        counter++;
+      }
   }
   parsed_args[counter] = NULL;
   return parsed_args;
@@ -64,15 +67,16 @@ void launch_process(char ** args){
       close(out);
       close(d);
     }
+    int file;
     if(oredirect){
-      int in = open(args[oarrowIndex + 1], O_RDONLY, 0644);
-      int d = dup(STDIN_FILENO);
+      //printf("%s\n",args[oarrowIndex+1]);
+      int file = open(args[oarrowIndex + 1], O_RDONLY);
+      dup2(file, STDIN_FILENO);
 
-      dup2(in, 1);
-      close(in);
-      close(d);
+
     }
     execvp(args[0],args);
+    close(file);
     exit(1);
   }
   else do {
@@ -105,6 +109,7 @@ char *** sep_colon(char * line,int commandCount){
   char** parsed_coms = malloc(sizeof(char *)*commandCount+sizeof(char *));
   while(line){
       parsed_coms[counter]=strsep( &line, ";");
+      //printf("%s\n",parsed_coms[counter] );
       counter++;
   }
   parsed_coms[counter] = NULL;
