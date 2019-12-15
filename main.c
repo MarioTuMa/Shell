@@ -15,6 +15,7 @@ int main(int argc, char **argv){
     char cwd[4096];
     getcwd(cwd, 4096);
     printf("%s>", cwd);
+    //fflush(stdout);
     char directString[4096];
     int limit=4096;
     fgets(directString, limit, stdin);

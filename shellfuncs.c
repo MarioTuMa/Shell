@@ -41,6 +41,7 @@ void launch_process(char ** args){
     int arrowIndex = 0;
     int oredirect=0;
     int oarrowIndex = 0;
+    int exec=1;
     while(args[i]){
       //printf("%s\n",args[i]);
       if(!strcmp(">",args[i])){
@@ -57,8 +58,31 @@ void launch_process(char ** args){
           args[i]=NULL;
         }
       }
+
+      if(args[i]){
+        if (!strcmp(args[i], "|")){         //piping
+            FILE *p = popen(args[0], "r");
+            if (p == NULL){
+                printf("cannot open pipe process\n");
+            }
+            else {
+                char pipedCommands[4096];
+                FILE *p2 = popen(args[2], "w"); //open write end of pipe
+                while (fgets( pipedCommands, sizeof(pipedCommands), p) != NULL) {
+                    fputs(pipedCommands, p2); //write info to input of next command
+                    //printf("%s->%s", args[0], pipedCommands);
+                }
+                pclose(p2);
+            }
+            pclose(p);
+            exec=0;
+        }
+
+      }
       i++;
+
     }
+
     if(redirect){
       int out = open(args[arrowIndex + 1], O_RDWR|O_CREAT|O_TRUNC, 0755);
       int d = dup(STDOUT_FILENO);
@@ -75,7 +99,10 @@ void launch_process(char ** args){
 
 
     }
-    execvp(args[0],args);
+    if(exec){
+      execvp(args[0],args);
+
+    }
     close(file);
     exit(1);
   }
@@ -89,9 +116,7 @@ void launch_process(char ** args){
     }
     else {
       if (WIFEXITED(status)){
-        if(WEXITSTATUS(status)){
-          printf("Invalid command \n");
-        }
+        printf("");
       }
 
       else{
