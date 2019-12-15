@@ -36,13 +36,23 @@ void launch_process(char ** args){
     int i=0;
     int redirect=0;
     int arrowIndex = 0;
+    int oredirect=0;
+    int oarrowIndex = 0;
     while(args[i]){
       //printf("%s\n",args[i]);
       if(!strcmp(">",args[i])){
-        //printf("We need to redirect \n");
+        //printf("We need to redirect >\n");
         redirect=1;
         arrowIndex = i;
         args[i]=NULL;
+      }
+      if(args[i]){
+        if(!strcmp("<",args[i])){
+          //printf("We need to redirect <\n");
+          oredirect=1;
+          oarrowIndex = i;
+          args[i]=NULL;
+        }
       }
       i++;
     }
@@ -52,6 +62,14 @@ void launch_process(char ** args){
 
       dup2(out, 1);
       close(out);
+      close(d);
+    }
+    if(oredirect){
+      int in = open(args[oarrowIndex + 1], O_RDONLY, 0644);
+      int d = dup(STDIN_FILENO);
+
+      dup2(in, 1);
+      close(in);
       close(d);
     }
     execvp(args[0],args);
@@ -86,7 +104,7 @@ char *** sep_colon(char * line,int commandCount){
   int currentSize = 0;
   char** parsed_coms = malloc(sizeof(char *)*commandCount+sizeof(char *));
   while(line){
-      parsed_coms[counter]=strsep( &line, ";");
+      parsed_coms[counter]=strsep( &line, " ; ");
       counter++;
   }
   parsed_coms[counter] = NULL;
