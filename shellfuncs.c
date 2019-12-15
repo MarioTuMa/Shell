@@ -104,7 +104,7 @@ char *** sep_colon(char * line,int commandCount){
   int currentSize = 0;
   char** parsed_coms = malloc(sizeof(char *)*commandCount+sizeof(char *));
   while(line){
-      parsed_coms[counter]=strsep( &line, " ; ");
+      parsed_coms[counter]=strsep( &line, ";");
       counter++;
   }
   parsed_coms[counter] = NULL;

@@ -1,0 +1,14 @@
+total 112
+-rwxr-xr-x  1 mariotutuncumacias  staff    97 Dec 15 15:57 hi
+-rwxr-xr-x  1 mariotutuncumacias  staff     0 Dec 15 15:58 hi.txt
+-rw-r--r--  1 mariotutuncumacias  staff  1155 Dec 15 15:57 main.c
+-rw-r--r--  1 mariotutuncumacias  staff  2208 Dec 15 15:57 main.o
+-rw-r--r--  1 mariotutuncumacias  staff   283 Dec 15 15:57 makefile
+-rwxr-xr-x  1 mariotutuncumacias  staff  9704 Dec 15 15:58 program
+-rw-r--r--  1 mariotutuncumacias  staff   595 Dec 15 15:57 readme
+-rw-r--r--  1 mariotutuncumacias  staff  3168 Dec 15 15:58 shellfuncs.c
+-rw-r--r--  1 mariotutuncumacias  staff   174 Dec 15 15:57 shellfuncs.h
+-rw-r--r--  1 mariotutuncumacias  staff  3120 Dec 15 15:58 shellfuncs.o
+-rw-r--r--  1 mariotutuncumacias  staff    99 Dec 15 15:57 test.py
+-rw-r--r--  1 mariotutuncumacias  staff   297 Dec 15 15:57 testcoms
+-rwxr-xr-x  1 mariotutuncumacias  staff   242 Dec 15 15:57 wholist
