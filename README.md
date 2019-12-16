@@ -22,3 +22,5 @@ int checkDefaults(char ** args);
 ##Bugs:
 
     When running a testfile with ./program < testcoms, the program will at a seemingly random but consistent time, print the prompts all at once and the output intersects with the output of the functions called. This tends to happen near piping commands so there may be a problem there.
+    
+    If an empty command is typed then a seg fault occurs. However if an invalid command is typed then no seg fault occurs. This happens similarly if there is a blank line in a file that is redirected to the shell's stdin.
