@@ -27,8 +27,9 @@ int main(int argc, char **argv){
     char*** callParams=sep_colon(directString,commandCount);
     int i;
     for(i=0;i<commandCount;i++){
-
-      launch_process(callParams[i]);
+      if(callParams[i] && callParams[i][0] && strlen(callParams[i][0]) && callParams[i][0][0]!='\n'){
+        launch_process(callParams[i]);
+      }  
       //free(callParams[i]);
     }
     //free(callParams[commandCount]);
