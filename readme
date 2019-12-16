@@ -2,18 +2,23 @@
 
 char ** parse_args( char * line, int commandCount );
   - Separates a string into an array of smaller strings on spaces that can then be used with execvp.
+  - Takes a string and int as arguments, returns a char**.
 
 void launch_process(char ** args);
   - Creates a child process by forking to run commands with execvp. It also handels redirection.
+  - Takes a char** as an argument, returns void.
 
 char *** sep_colon(char * line, int commandCount);
   - Separates a string into an array of smaller strings on semicolons for the purpose of running multiple commands at once with execvp.
+  - Takes in a string and an int as arguments, returns a char***.
 
 int countChar(char * line,char b);
   - Counts the number of occurances of a given character in a string.
+  - Takes in a string and a char as arguments, returns an int.
 
 int checkDefaults(char ** args);
-  - Checks to see if the command is a default command (cd or exit), and if so executes that command and returns 0 to indicate to not execvp anything sle
+  - Checks to see if the command is a default command (cd or exit), and if so executes that command and returns 0 to indicate to not execvp anything else.
+  - Takes a char** as an argument, returns an int.
 
 ##Features:
 
