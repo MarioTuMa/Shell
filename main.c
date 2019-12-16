@@ -19,32 +19,20 @@ int main(int argc, char **argv){
     char directString[4096];
     int limit=4096;
     fgets(directString, limit, stdin);
-    directString[strlen(directString)-1]='\0';
+    if(directString[strlen(directString)-1]=='\n'){
+      directString[strlen(directString)-1]='\0';
+    }
+
     int commandCount = countChar(directString,';')+1;
     char*** callParams=sep_colon(directString,commandCount);
-    char cd[3] = "cd\n";
-    char exits[5] = "exit\n";
-    cd[2]-=10;
-    exits[4]-=10;
     int i;
     for(i=0;i<commandCount;i++){
-      if(!strcmp(callParams[i][0],cd)){
-        char *dir = strcat(strcat(cwd,"/"),callParams[i][1]);
 
-        if(chdir(dir)){
-          printf("%s\n",strerror(errno));
-        }
-      }
-      else if(!strcmp(callParams[i][0],exits)){
-        return 0;
-      }
-      else{
-        launch_process(callParams[i]);
-      }
-      free(callParams[i]);
+      launch_process(callParams[i]);
+      //free(callParams[i]);
     }
     //free(callParams[commandCount]);
-    free(callParams);
+    //free(callParams);
   }
   return 0;
 }
