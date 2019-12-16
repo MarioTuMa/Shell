@@ -35,7 +35,7 @@ int checkDefaults(char ** args){
   getcwd(cwd, 4096);
   char cd[3] = "cd";
   char nullipy[1] = "\0";
-  char exits[4] = "exit";
+  char exits[5] = "exit";
   if(!strcmp(args[0],cd)){
     char *dir = strcat(strcat(cwd,"/"),args[1]);
 
