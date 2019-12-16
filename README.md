@@ -17,8 +17,8 @@ int checkDefaults(char ** args);
 
 ##Features:
 
-  Deals with extra spaces
+  Deals with extra spaces. I.e. you can run `ls                ;ls;   ls   ;ls`
 
 ##Bugs:
 
-    When running a testfile with ./program < testcoms, the program will at a seemingly random but consistent time, print the prompts all at once and the output intersects with the output of the rest
+    When running a testfile with ./program < testcoms, the program will at a seemingly random but consistent time, print the prompts all at once and the output intersects with the output of the functions called. This tends to happen near piping commands so there may be a problem there.
