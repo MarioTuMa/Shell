@@ -1,4 +1,4 @@
-#Shell:
+# Shell:
 
 char ** parse_args( char * line, int commandCount );
   - Separates a string into an array of smaller strings on spaces that can then be used with execvp.
@@ -15,11 +15,11 @@ int countChar(char * line,char b);
 int checkDefaults(char ** args);
   - Checks to see if the command is a default command (cd or exit), and if so executes that command and returns 0 to indicate to not execvp anything sle
 
-##Features:
+## Features:
 
   Deals with extra spaces. I.e. you can run `ls                ;ls;   ls   ;ls`
 
-##Bugs:
+## Bugs:
 
     When running a testfile with ./program < testcoms, the program will at a seemingly random but consistent time, print the prompts all at once and the output intersects with the output of the functions called. This tends to happen near piping commands so there may be a problem there.
     
